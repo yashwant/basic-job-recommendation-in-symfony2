@@ -1,0 +1,13 @@
+<parameters>
+
+    <parameter key="app_user.oauth_user_provider.class">AppBundle\Model\OAuthUserProvider</parameter>
+
+</parameters>
+
+<services>
+
+    <service id="app_user.oauth_user_provider" class="%app_user.oauth_user_provider.class%">
+
+    </service>
+
+</services>

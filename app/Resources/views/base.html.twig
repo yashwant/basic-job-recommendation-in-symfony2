@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+        <meta name="robots" content="noindex,nofollow" />
+        <title>Basic Job Recommendation System</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+        <style>
+            body{
+                padding-top: 70px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <div class="container-fluid">
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="{{ path('homepage') }}">JobRecco</a>
+                        </div>
+
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="">Recommended Jobs</a></li>
+                                <li><a href="">Dashboard</a></li>
+                                <li><a href="{{ path('user_serverside_login') }}">Login</a></li>
+                            </ul>
+
+                        </div><!-- /.navbar-collapse -->
+                    </div>
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        {% if 0 %} {# and app.session.hasFlash('success_message') #}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h2>{#{ app.session.flash('success_message') }#}</h2>
+                            </div>
+                        {% endif %}
+                        {% if 0 %} {# and app.session.hasFlash('error_message') #}
+                            <div class="alert alert-error alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h2>{#{ app.session.flash('error_message') }#}</h2>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <!--        
+                <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+                    api_key: 78dxxn2dnu4pdn
+                    authorize: true
+                </script>
+                <script type="text/javascript">
+                    function onLinkedInAuth() {
+                        IN.API.Profile("me").fields("firstName","lastName","headline","pictureUrl", "languages","skills", "three-current-positions", "three-past-positions", "courses", "educations", "certifications", "patents", "publications", "interests", "id", "recommendations-received", "job-bookmarks", "following", "proposal-comments", "summary", "specialties", "industry")
+                                .result(function (me) {
+                                    console.dir(me);
+                                    var id = me.values[0].id;
+                                });
+                    }
+                </script>
+                <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>
+        -->
+    </body>
+</html>
