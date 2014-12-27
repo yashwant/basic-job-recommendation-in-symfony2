@@ -5,13 +5,13 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * College
+ * UserGroups
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\UserGroupsRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class College
+class UserGroups
 {
 
     /**
@@ -24,11 +24,21 @@ class College
     private $id;
 
     /**
-     * @var string
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id", nullable=false)
+     * 
      */
-    private $name;
+    private $user;
+
+    /**
+     * @var \AppBundle\Entity\LinkedinGroup
+     *
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\LinkedinGroup")
+     * @ORM\JoinColumn(name="ligroup", referencedColumnName="id", nullable=false)
+     */
+    private $group;
 
     /**
      * @var \DateTime
@@ -48,25 +58,43 @@ class College
     }
 
     /**
-     * Get name
      * 
      * @return type
      */
-    public function getName()
+    function getUser()
     {
-        return $this->name;
+        return $this->user;
     }
 
     /**
-     * Set name
      * 
-     * @param type $name
-     * 
-     * @return College
+     * @param \AppBundle\Entity\User $user
+     * @return \AppBundle\Entity\UserGroups
      */
-    public function setName($name)
+    function setUser(\AppBundle\Entity\User $user)
     {
-        $this->name = $name;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\LinkedinGroup $group
+     * @return \AppBundle\Entity\UserGroups
+     */
+    function setGroup(\AppBundle\Entity\LinkedinGroup $group)
+    {
+        $this->group = $group;
 
         return $this;
     }
@@ -76,7 +104,7 @@ class College
      *
      * @param \DateTime $createdOnTime
      *
-     * @return College
+     * @return JobSkills
      */
     public function setCreatedOnTime($createdOnTime)
     {

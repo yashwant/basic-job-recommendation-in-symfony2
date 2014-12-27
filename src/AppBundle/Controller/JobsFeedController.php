@@ -13,7 +13,21 @@ class JobsFeedController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('default/index.html.twig');
+        $user = $this->get('session')->get('user');
+        if (!$user) {
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+        $unserialisezUser = list (
+                $this->id,
+                $this->email,
+                $this->lastLoginTime,
+                $this->lastUpdatedOnTime,
+                $this->signupOnTime,
+                ) = unserialize($user);
+        $em = $this->getDoctrine()->getManager();
+        $userEntity = $em->getRepository('AppBundle:User')->find($unserialisezUser[0]);
+        $recommendations = $em->getRepository('AppBundle:Job')->filterJobs($userEntity);
+        return $this->render('jobsfeed/recommendations.html.twig', array('jobs' => $recommendations));
     }
 
 }

@@ -52,12 +52,32 @@ class Job
     private $maxExp;
 
     /**
-     * @var integer
+     * @var \AppBundle\Entity\Company
      *
-     * @ORM\Column(name="company", type="integer")
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id", nullable=true)
+     * 
      */
     private $company;
-    
+
+    /**
+     * @var \AppBundle\Entity\Industry
+     *
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Industry")
+     * @ORM\JoinColumn(name="industry", referencedColumnName="id", nullable=true)
+     * 
+     */
+    private $industry;
+
+    /**
+     * @var \AppBundle\Entity\Location
+     *
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Location")
+     * @ORM\JoinColumn(name="location", referencedColumnName="id", nullable=true)
+     * 
+     */
+    private $location;
+
     /**
      * @var \DateTime
      *
@@ -113,6 +133,111 @@ class Job
     function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getMinExp()
+    {
+        return $this->minExp;
+    }
+
+    /**
+     * 
+     * @param type $minExp
+     * @return \AppBundle\Entity\Job
+     */
+    function setMinExp($minExp)
+    {
+        $this->minExp = $minExp;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getMaxExp()
+    {
+        return $this->maxExp;
+    }
+
+    /**
+     * 
+     * @param type $maxExp
+     * @return \AppBundle\Entity\Job
+     */
+    function setMaxExp($maxExp)
+    {
+        $this->maxExp = $maxExp;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\Company $company
+     * @return \AppBundle\Entity\Job
+     */
+    function setCompany(\AppBundle\Entity\Company $company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getIndustry()
+    {
+        return $this->industry;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\Industry $industry
+     * @return \AppBundle\Entity\Job
+     */
+    function setIndustry(\AppBundle\Entity\Industry $industry)
+    {
+        $this->industry = $industry;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\Location $location
+     * @return \AppBundle\Entity\Job
+     */
+    function setLocation(\AppBundle\Entity\Location $location)
+    {
+        $this->location = $location;
 
         return $this;
     }

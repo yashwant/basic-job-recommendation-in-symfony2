@@ -65,7 +65,7 @@ class Skill
      */
     public function setName($name)
     {
-        $this->firstName = $name;
+        $this->name = $name;
     }
 
     /**

@@ -5,13 +5,13 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * College
+ * Location
  *
  * @ORM\Table()
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  */
-class College
+class Location
 {
 
     /**
@@ -62,7 +62,7 @@ class College
      * 
      * @param type $name
      * 
-     * @return College
+     * @return Location
      */
     public function setName($name)
     {
@@ -76,7 +76,7 @@ class College
      *
      * @param \DateTime $createdOnTime
      *
-     * @return College
+     * @return Location
      */
     public function setCreatedOnTime($createdOnTime)
     {

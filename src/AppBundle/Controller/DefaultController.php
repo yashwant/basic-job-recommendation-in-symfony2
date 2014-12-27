@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use LinkedIn;
+use AppBundle\LinkedIn\LinkedIn as LinkedinApi;
 
 class DefaultController extends Controller
 {
@@ -14,7 +14,13 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('default/index.html.twig');
+        $user = $this->get('session')->get('user');
+//        echo $this->get('session')->get('token'); exit();
+        if ($user) {
+            return $this->redirect($this->generateUrl('job_reco'));
+        } else {
+            return $this->render('default/index.html.twig');
+        }
     }
 
     /**
@@ -27,11 +33,25 @@ class DefaultController extends Controller
     }
 
     /**
+     * 
+     * @Route("/logout", name="user_logout")
+     */
+    public function logoutAction()
+    {
+
+        $this->get('session')->set('token', null);
+        $this->get('session')->set('token_expires', null);
+        $this->get('session')->set('user', null);
+
+        return $this->redirect($this->generateUrl('homepage'));
+    }
+
+    /**
      * @Route("/li_login", name="user_serverside_login")
      */
     public function loginServersideAction()
     {
-        $li = new LinkedIn\LinkedIn(
+        $li = new LinkedinApi(
                 array(
             'api_key' => $this->container->getParameter('linkedin_key'),
             'api_secret' => $this->container->getParameter('linkedin_secret'),
@@ -40,10 +60,10 @@ class DefaultController extends Controller
         );
         $url = $li->getLoginUrl(
                 array(
-                    LinkedIn\LinkedIn::SCOPE_FULL_PROFILE,
-                    LinkedIn\LinkedIn::SCOPE_EMAIL_ADDRESS,
-                    LinkedIn\LinkedIn::SCOPE_NETWORK,
-                    LinkedIn\LinkedIn::SCOPE_READ_WRITE_GROUPS
+                    LinkedinApi::SCOPE_FULL_PROFILE,
+                    LinkedinApi::SCOPE_EMAIL_ADDRESS,
+                    LinkedinApi::SCOPE_NETWORK,
+                    LinkedinApi::SCOPE_READ_WRITE_GROUPS
                 )
         );
         return $this->redirect($url);
@@ -54,7 +74,7 @@ class DefaultController extends Controller
      */
     public function linkedinCallbackAction(\Symfony\Component\HttpFoundation\Request $request)
     {
-        $li = new LinkedIn\LinkedIn(
+        $li = new LinkedinApi(
                 array(
             'api_key' => $this->container->getParameter('linkedin_key'),
             'api_secret' => $this->container->getParameter('linkedin_secret'),
@@ -69,15 +89,34 @@ class DefaultController extends Controller
             $token_expires = $li->getAccessTokenExpiration();
             $this->get('session')->set('token', $token);
             $this->get('session')->set('token_expires', $token_expires);
-            $info = $li->get('/people/~:(firstName,lastName,headline,pictureUrl,languages,skills,three-current-positions,three-past-positions,courses,educations,certifications,patents,publications,interests,id,recommendations-received,job-bookmarks,following,proposal-comments,summary,specialties,industry)');
+            $info = $li->get('/people/~:(firstName,lastName,headline,pictureUrl,languages,skills,three-current-positions,three-past-positions,courses,educations,certifications,patents,publications,interests,id,recommendations-received,job-bookmarks,following,proposal-comments,summary,specialties,industry,location:(name))');
+            
+//            echo '<pre>'; print_r($info['threeCurrentPositions']);
+//            exit();
 //            $this->createUser($info, $token, $token_expires);
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('AppBundle:User')->addNew($info);
             if ($user) {
                 $this->get('session')->set('user', $user->serialize());
             }
-//            echo '<pre>';
-//            var_dump($info);
+            else
+            {
+                $this->get('session')->getFlashBag()->add('error_message', 'Oops Something went wrong. Please try again.');
+                return $this->redirect($this->generateUrl('homepage'));
+            }
+            $groups = $li->get('/people/~/group-memberships:(group:(id,name,description))?membership-state=member&start=0&count=50');
+            //echo '<pre>'; //,counts-by-category
+
+            $em->getRepository('AppBundle:UserGroups')->add($groups, $user);
+            if(array_key_exists('skills', $info))
+            {
+                $em->getRepository('AppBundle:Skill')->bulkAdd($info['skills'], $user);
+            }
+            if(array_key_exists('educations', $info))
+            {
+                $em->getRepository('AppBundle:UserEducations')->bulkAdd($info['educations'], $user);
+            }
+            
 //            exit();
             $this->get('session')->getFlashBag()->add('success_message', 'Authentication successfully done!!!');
 

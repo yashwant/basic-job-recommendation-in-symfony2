@@ -61,7 +61,7 @@ class JobSkills
      * 
      * @return \AppBundle\Entity\Job
      */
-    public function getUJob()
+    public function getJob()
     {
         return $this->job;
     }

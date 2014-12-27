@@ -2,8 +2,16 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-6 col-md-offset-6 well">
-            <h3>Login</h3>
+        <div class="col-md-10 col-md-offset-1">
+            <h3>Recommended Jobs for you.</h3>
+
+            {% for job in jobs %}
+                <div class="row well well-small">
+                    <h4>{{ job.title }}</h4>
+                    <span class="col-md-12">{{ job.description }}</span>
+                    <span class="col-md-4">{{ job.minExp }}-{{ job.maxExp }} years</span>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

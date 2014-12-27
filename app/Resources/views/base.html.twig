@@ -25,14 +25,17 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="{{ path('homepage') }}">JobRecco</a>
+                            <a class="navbar-brand" href="{{ path('homepage') }}">JobRecommendation</a>
                         </div>
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="">Recommended Jobs</a></li>
-                                <li><a href="">Dashboard</a></li>
+                                {% if app.session.get('user') %}
+                                <li><a href="{{ path('job_reco') }}">Recommended Jobs</a></li>
+                                <li><a href="{{ path('user_logout') }}">Logout</a></li>
+                                {% else %}
                                 <li><a href="{{ path('user_serverside_login') }}">Login</a></li>
+                                {% endif %}
                             </ul>
 
                         </div><!-- /.navbar-collapse -->
@@ -42,22 +45,22 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        {% if 0 %} {# and app.session.hasFlash('success_message') #}
+                        {% for flashMessage in app.session.flashbag.get('success_message') %}
                             <div class="alert alert-success alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                <h2>{#{ app.session.flash('success_message') }#}</h2>
+                                <h2>{{ flashMessage }}</h2>
                             </div>
-                        {% endif %}
-                        {% if 0 %} {# and app.session.hasFlash('error_message') #}
+                        {% endfor %}
+                        {% for flashMessage in app.session.flashbag.get('success_message') %}
                             <div class="alert alert-error alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                <h2>{#{ app.session.flash('error_message') }#}</h2>
+                                <h2>{{ flashMessage }}</h2>
                             </div>
-                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 {% block content %}

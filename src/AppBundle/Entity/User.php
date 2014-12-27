@@ -3,10 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -64,20 +61,37 @@ class User implements \Serializable
     private $headline;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="currentCompany", type="integer")
+     * @ORM\Column(name="position", type="string", length=255, nullable=true)
+     */
+    private $position;
+
+    /**
+     * @var \AppBundle\Entity\Company
+     *
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Company")
+     * @ORM\JoinColumn(name="currentCompany", referencedColumnName="id", nullable=true)
+     * 
      */
     private $currentCompany;
 
     /**
-     * @var integer
+     * @var \AppBundle\Entity\Location
      *
-     * @ORM\Column(name="college", type="integer")
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Location")
+     * @ORM\JoinColumn(name="location", referencedColumnName="id", nullable=true)
+     * 
      */
-    private $college;
+    private $location;
 
-    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="experience", type="integer", length=3, nullable=false)
+     */
+    private $experience;
+
     /**
      * @var string
      *
@@ -86,9 +100,11 @@ class User implements \Serializable
     private $summary;
 
     /**
-     * @var string
+     * @var \AppBundle\Entity\Industry
      *
-     * @ORM\Column(name="industry", type="text", length=512, nullable=true)
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Industry")
+     * @ORM\JoinColumn(name="industry", referencedColumnName="id", nullable=true)
+     * 
      */
     private $industry;
 
@@ -185,11 +201,32 @@ class User implements \Serializable
 
     /**
      * 
+     * @param type $linkedinId
+     */
+    public function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
+    }
+
+    /**
+     * 
      * @return type
      */
     public function getPictureUrl()
     {
         return $this->pictureUrl;
+    }
+
+    /**
+     * 
+     * @param type $pictureUrl
+     * @return \AppBundle\Entity\User
+     */
+    public function setPictureUrl($pictureUrl)
+    {
+        $this->pictureUrl = $pictureUrl;
+
+        return $this;
     }
 
     /**
@@ -201,39 +238,142 @@ class User implements \Serializable
         return $this->headline;
     }
 
+    /**
+     * 
+     * @param type $headline
+     * @return \AppBundle\Entity\User
+     */
+    public function setHeadline($headline)
+    {
+        $this->headline = $headline;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * 
+     * @param type $position
+     * @return \AppBundle\Entity\User
+     */
+    function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getCurrentCompany()
+    {
+        return $this->currentCompany;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\Company $currentCompany
+     * @return \AppBundle\Entity\User
+     */
+    function setCurrentCompany(\AppBundle\Entity\Company $currentCompany)
+    {
+        $this->currentCompany = $currentCompany;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * 
+     * @param \AppBundle\Entity\Location $location
+     * @return \AppBundle\Entity\User
+     */
+    function setLocation(\AppBundle\Entity\Location $location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getExperience()
+    {
+        return $this->experience;
+    }
+
+    /**
+     * 
+     * @param type $experience
+     * @return \AppBundle\Entity\User
+     */
+    function setExperience($experience)
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
     public function getSummary()
     {
         return $this->summary;
     }
 
+    /**
+     * 
+     * @param type $summary
+     * @return \AppBundle\Entity\User
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
     public function getIndustry()
     {
         return $this->industry;
     }
 
-    public function setLinkedinId($linkedinId)
-    {
-        $this->linkedinId = $linkedinId;
-    }
-
-    public function setPictureUrl($pictureUrl)
-    {
-        $this->pictureUrl = $pictureUrl;
-    }
-
-    public function setHeadline($headline)
-    {
-        $this->headline = $headline;
-    }
-
-    public function setSummary($summary)
-    {
-        $this->summary = $summary;
-    }
-
+    /**
+     * 
+     * @param type $industry
+     * @return \AppBundle\Entity\User
+     */
     public function setIndustry($industry)
     {
         $this->industry = $industry;
+
+        return $this;
     }
 
     /**

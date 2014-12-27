@@ -5,13 +5,13 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * College
+ * LinkedinGroup
  *
  * @ORM\Table()
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  */
-class College
+class LinkedinGroup
 {
 
     /**
@@ -26,9 +26,23 @@ class College
     /**
      * @var string
      *
+     * @ORM\Column(name="linkedinId", type="string", length=255, nullable=false)
+     */
+    private $linkedinId;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=1024, nullable=true)
+     */
+    private $description;
 
     /**
      * @var \DateTime
@@ -62,7 +76,7 @@ class College
      * 
      * @param type $name
      * 
-     * @return College
+     * @return LinkedinGroup
      */
     public function setName($name)
     {
@@ -72,11 +86,53 @@ class College
     }
 
     /**
+     * 
+     * @return type
+     */
+    function getLinkedinId()
+    {
+        return $this->linkedinId;
+    }
+
+    /**
+     * 
+     * @param type $linkedinId
+     * @return \AppBundle\Entity\LinkedinGroup
+     */
+    function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * 
+     * @param type $description
+     * @return \AppBundle\Entity\LinkedinGroup
+     */
+    function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
      * Set createdOnTime
      *
      * @param \DateTime $createdOnTime
      *
-     * @return College
+     * @return LinkedinGroup
      */
     public function setCreatedOnTime($createdOnTime)
     {
